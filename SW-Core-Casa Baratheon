@@ -1,0 +1,91 @@
+enable
+configure terminal
+hostname SW-CORE
+banner motd "SOMENTE PESSOAL DE TI"
+enable secret SenhadaEnable
+service password-encryption
+ip domain-name PeachDaisy.Local
+crypto key generate rsa general-key modulus 1024
+username hugo privilege 15 secret senhahugo
+username marcos privilege 15 secret senhamarcos
+username rickrezende privilege 15 secret senharick
+username vinicius privilege 15 secret senhavinicius
+username joao privilege 15 secret senhajoao
+line console 0
+password SenhadaConsole
+login
+exit
+line vty 0 15
+transport input ssh
+login local
+exec-timeout 5
+exit 
+ip default-gateway 172.16.20.33
+vlan 10
+name RH
+exit
+vlan 20
+name QUALIDADE
+exit
+vlan 30
+name RECEPCAO
+exit
+vlan 40
+name CONSULTORES
+exit
+vlan 50
+name ANALISTAS
+exit
+vlan 60
+name TI
+exit
+vlan 70
+name ADMINISTRACAO
+exit
+vlan 80
+name VOZ
+exit
+vlan 90
+name FINANCAS
+exit
+vlan 99
+name NATIVA
+interface gigabitEthernet 0/1
+switchport mode trunk
+switchport trunk allowed vlan 10
+switchport trunk allowed vlan 20
+switchport trunk allowed vlan 30
+switchport trunk allowed vlan 40
+switchport trunk allowed vlan 50 
+switchport trunk allowed vlan 60
+switchport trunk allowed vlan 70
+switchport trunk allowed vlan 80
+switchport trunk allowed vlan 90
+switchport trunk allowed vlan 99
+switchport trunk native vlan 100
+no shutdown
+exit
+interface gigabitEthernet 0/2
+switchport mode trunk
+switchport trunk allowed vlan 10
+switchport trunk allowed vlan 20
+switchport trunk allowed vlan 30 
+switchport trunk allowed vlan 40
+switchport trunk allowed vlan 50
+switchport trunk allowed vlan 60
+switchport trunk allowed vlan 70
+switchport trunk allowed vlan 80
+switchport trunk allowed vlan 90
+switchport trunk allowed vlan 99
+switchport trunk allowed vlan 100
+no shutdown
+exit
+interface fastEthernet 0/3
+switchport mode access
+switchport access vlan 99
+exit
+interface vlan 99
+ip address 172.16.20.46 255.255.255.240
+description INTERFACE DE GERENCIAMENTO
+exit
+do wr
